@@ -47,7 +47,7 @@ const genDocs = async (): Promise<void> => {
     echo('✅ Documentation generation completed successfully!\n');
   } catch (error) {
     echo(`❌ Documentation generation failed: ${String(error)}\n`);
-    throw error;
+    process.exit(1);
   }
 };
 

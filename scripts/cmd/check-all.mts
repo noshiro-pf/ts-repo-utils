@@ -88,5 +88,5 @@ try {
   echo('✅ All checks completed successfully!\n');
 } catch (error) {
   echo(`❌ Check failed: ${String(error)}\n`);
-  throw error;
+  process.exit(1);
 }

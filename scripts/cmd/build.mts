@@ -151,7 +151,7 @@ const build = async (): Promise<void> => {
     echo('✅ Build completed successfully!\n');
   } catch (error) {
     echo(`❌ Build failed: ${String(error)}\n`);
-    throw error;
+    process.exit(1);
   }
 };
 
