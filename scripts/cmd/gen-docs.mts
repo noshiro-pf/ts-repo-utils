@@ -1,5 +1,6 @@
 import { assertPathExists } from '../../src/index.mjs';
 import '../../src/node-global.mjs';
+import { projectRootPath } from '../project-root-path.mjs';
 
 const TYPEDOC_CONFIG = path.resolve(
   projectRootPath,
@@ -10,7 +11,7 @@ const TYPEDOC_CONFIG = path.resolve(
  * Generates documentation using TypeDoc and formats the output.
  * @throws Error if any step fails.
  */
-export const genDocs = async (): Promise<void> => {
+const genDocs = async (): Promise<void> => {
   echo('Starting documentation generation...\n');
 
   try {
@@ -49,3 +50,5 @@ export const genDocs = async (): Promise<void> => {
     throw error;
   }
 };
+
+await genDocs();
