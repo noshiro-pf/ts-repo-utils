@@ -14,7 +14,15 @@ export const getUntrackedFiles = async (
   Result<readonly string[], ExecException | Readonly<{ message: string }>>
 > => {
   // Get changed files from git status
-  const result = await $('git status --porcelain');
+  const result = await $(
+    [
+      `git ls-files --others --exclude-standard`,
+      // Append '--deleted' to include deleted files only if excludeDeleted is explicitly false
+      (options?.excludeDeleted ?? true) ? '' : '--deleted',
+    ]
+      .filter((s) => s !== '')
+      .join(' '),
+  );
 
   if (Result.isErr(result)) {
     return result;
@@ -25,20 +33,8 @@ export const getUntrackedFiles = async (
   // Parse git status output
   const files = stdout
     .split('\n')
-    .filter((line) => line.trim() !== '')
-    .map((line) => {
-      // Status format: "XY filename" where X and Y are status codes
-      const match = /^..\s+(.+)$/u.exec(line);
-      return match?.[1];
-    })
-    .filter(
-      (file): file is string =>
-        // Filter out deleted files (status starts with 'D')
-        file !== undefined &&
-        ((options?.excludeDeleted ?? true)
-          ? !stdout.includes(`D  ${file}`)
-          : true),
-    );
+    .map((s) => s.trim())
+    .filter((s) => s !== '');
 
   return Result.ok(files);
 };
@@ -57,7 +53,13 @@ export const getDiffFrom = async (
 > => {
   // Get files that differ from base branch/commit (excluding deleted files)
   const result = await $(
-    `git diff --name-only ${base} ${(options?.excludeDeleted ?? true) ? '--diff-filter=d' : ''}`,
+    [
+      `git diff --name-only`,
+      base,
+      (options?.excludeDeleted ?? true) ? '--diff-filter=d' : '',
+    ]
+      .filter((s) => s !== '')
+      .join(' '),
   );
 
   if (Result.isErr(result)) {
