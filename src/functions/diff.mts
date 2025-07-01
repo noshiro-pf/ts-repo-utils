@@ -9,6 +9,8 @@ export const getUntrackedFiles = async (
   options?: Readonly<{
     /** @default true */
     excludeDeleted?: boolean;
+    /** @default false */
+    silent?: boolean;
   }>,
 ): Promise<
   Result<readonly string[], ExecException | Readonly<{ message: string }>>
@@ -22,6 +24,7 @@ export const getUntrackedFiles = async (
     ]
       .filter((s) => s !== '')
       .join(' '),
+    { silent: options?.silent ?? false },
   );
 
   if (Result.isErr(result)) {
@@ -47,6 +50,8 @@ export const getDiffFrom = async (
   options?: Readonly<{
     /** @default true */
     excludeDeleted?: boolean;
+    /** @default false */
+    silent?: boolean;
   }>,
 ): Promise<
   Result<readonly string[], ExecException | Readonly<{ message: string }>>
@@ -60,6 +65,7 @@ export const getDiffFrom = async (
     ]
       .filter((s) => s !== '')
       .join(' '),
+    { silent: options?.silent ?? false },
   );
 
   if (Result.isErr(result)) {
