@@ -1299,6 +1299,13 @@ export default tseslint.config(
     },
   },
   {
+    files: ['src/**/*'],
+    rules: {
+      'import/no-unassigned-import': 'off',
+      'unicorn/no-process-exit': 'off',
+    },
+  },
+  {
     files: ['scripts/**/*'],
     rules: {
       '@typescript-eslint/explicit-function-return-type': 'off',
