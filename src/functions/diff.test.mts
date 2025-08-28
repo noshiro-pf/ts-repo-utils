@@ -9,8 +9,6 @@ import {
 } from './diff.mjs';
 import { type ExecResult } from './exec-async.mjs';
 
-const DEBUG = true as boolean;
-
 describe('diff', () => {
   // Helper function to create a temporary git repository
   const createTempRepo = async (): Promise<{
@@ -330,7 +328,7 @@ describe('diff', () => {
       }
     });
 
-    test.skipIf(DEBUG)('should exclude deleted files by default', async () => {
+    test('should exclude deleted files by default', async () => {
       const { repoPath, cleanup, execInRepo } = await createTempRepo();
       const repoFunctions = createRepoFunctions(repoPath);
 
