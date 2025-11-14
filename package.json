@@ -79,6 +79,7 @@
     "z:vitest": "vitest --config ./configs/vitest.config.ts"
   },
   "dependencies": {
+    "@sindresorhus/is": "^7.1.1",
     "@types/micromatch": "^4.0.10",
     "cmd-ts": "^0.14.3",
     "fast-glob": "^3.3.3",
