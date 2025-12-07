@@ -28,7 +28,6 @@ jobs:
           - cspell
           - doc
           - check:ext
-          - md
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -55,4 +54,4 @@ jobs:
         run: pnpm run ${{ matrix.command }}
 
       - name: Check if there is no file diff
-        run: pnpm run z:assert-repo-is-clean
+        run: pnpm exec assert-repo-is-clean

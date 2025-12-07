@@ -46,4 +46,4 @@ jobs:
           OWNER: noshiro-pf
 
       - name: Check if there is no file diff
-        run: pnpm run z:assert-repo-is-clean
+        run: pnpm exec assert-repo-is-clean
