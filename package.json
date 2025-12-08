@@ -85,7 +85,7 @@
     "cmd-ts": "^0.14.3",
     "fast-glob": "^3.3.3",
     "micromatch": "^4.0.8",
-    "prettier": "^3.7.3",
+    "prettier": "^3.7.4",
     "ts-data-forge": "^6.0.0",
     "tsx": "^4.21.0"
   },
@@ -114,7 +114,7 @@
     "markdownlint": "0.39.0",
     "markdownlint-cli2": "0.19.1",
     "npm-run-all2": "8.0.4",
-    "prettier": "3.7.3",
+    "prettier": "3.7.4",
     "prettier-plugin-organize-imports": "4.3.0",
     "prettier-plugin-packagejson": "2.5.20",
     "rollup": "4.53.3",
@@ -130,7 +130,7 @@
     "vitest": "4.0.14"
   },
   "peerDependencies": {
-    "prettier": "^3.7.3"
+    "prettier": "^3.7.4"
   },
   "packageManager": "pnpm@10.24.0",
   "volta": {
