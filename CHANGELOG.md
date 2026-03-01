@@ -1,3 +1,9 @@
+# [9.0.0-alpha.1](https://github.com/noshiro-pf/ts-repo-utils/compare/v8.2.0...v9.0.0-alpha.1) (2026-03-01)
+
+### Features
+
+- **breaking:** change git functions to return absolute path instead of relative path in repository ([#295](https://github.com/noshiro-pf/ts-repo-utils/issues/295)) ([dd4117c](https://github.com/noshiro-pf/ts-repo-utils/commit/dd4117caabfcfd74a38c46c6a2a6e2e323e21e7a))
+
 # [8.2.0](https://github.com/noshiro-pf/ts-repo-utils/compare/v8.1.0...v8.2.0) (2026-02-12)
 
 ### Features
