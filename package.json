@@ -93,7 +93,7 @@
     "cmd-ts": "^0.14.3",
     "fast-glob": "^3.3.3",
     "micromatch": "^4.0.8",
-    "ts-data-forge": "^6.4.0",
+    "ts-data-forge": "^6.5.0",
     "tsx": "^4.21.0"
   },
   "devDependencies": {
