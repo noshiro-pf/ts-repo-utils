@@ -216,6 +216,8 @@ const generateIndexFileForDir = async (
   baseDir?: string,
   currentDepth: number = 0,
 ): Promise<void> => {
+  const conditionalEcho = config.silent ? () => {} : console.log;
+
   try {
     const actualBaseDir = baseDir ?? dirPath;
 
@@ -278,7 +280,7 @@ const generateIndexFileForDir = async (
       // eslint-disable-next-line security/detect-non-literal-fs-filename
       await fs.writeFile(indexPath, indexContent);
 
-      console.log(`Generated: ${path.relative(process.cwd(), indexPath)}`);
+      conditionalEcho(`Generated: ${path.relative(process.cwd(), indexPath)}`);
     }
   } catch (error) {
     throw new Error(
