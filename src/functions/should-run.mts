@@ -76,6 +76,9 @@ export const checkShouldRunTypeChecks = async (
     'docs/',
     '**.md',
     '**.txt',
+    //   - 'agents/**'
+    //   - 'docs/**'
+    //   - 'documents/**'
   ];
 
   const baseBranch = options?.baseBranch ?? 'origin/main';
