@@ -379,7 +379,7 @@ const filterFilesByCwd = (
 
   const cwdWithSep = resolvedCwd.endsWith(path.sep)
     ? resolvedCwd
-    : `${resolvedCwd}${path.sep}`;
+    : (`${resolvedCwd}${path.sep}` as const);
 
   return files.filter((file) => {
     const absFile = path.isAbsolute(file) ? file : path.resolve(file);
