@@ -1,8 +1,9 @@
 import * as rollupPluginReplaceNs from '@rollup/plugin-replace';
 import * as rollupPluginStripNs from '@rollup/plugin-strip';
-import * as rollupPluginTypescriptNs from '@rollup/plugin-typescript';
+import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { defineConfig } from 'rollup';
+import { defineConfig, type Plugin as RollupPlugin } from 'rollup';
+import * as rollupPluginEsbuildNs from 'rollup-plugin-esbuild';
 import { castMutable, Result, unknownToString } from 'ts-data-forge';
 import { projectRootPath } from '../scripts/project-root-path.mjs';
 import { glob } from '../src/functions/glob.mjs';
@@ -12,8 +13,9 @@ import tsconfig from './tsconfig.build.json' with { type: 'json' };
  * Resolves the actual default export of a module in a way that satisfies both
  * the type checker and the runtime.
  *
- * The `@rollup/plugin-*` packages ship CommonJS-flavored type declarations
- * (no ESM-specific `.d.mts`), so under `"moduleResolution": "nodenext"`
+ * The `@rollup/plugin-*` packages and `rollup-plugin-esbuild` ship
+ * CommonJS-flavored type declarations (no ESM-specific `.d.mts`), so under
+ * `"moduleResolution": "nodenext"`
  * TypeScript types the namespace as the CJS `module.exports` wrapper
  * (`ns.default` = the whole module, `ns.default.default` = the factory),
  * while at runtime this config is executed as ESM (the `import` condition
@@ -25,7 +27,7 @@ import tsconfig from './tsconfig.build.json' with { type: 'json' };
  * checks anymore. This helper unwraps `.default` chains until it reaches the
  * factory, which is correct for both views.
  */
-const interopDefault = <T>(moduleDefaultExport: T): UnwrapDefault<T> => {
+const interopDefault = <T,>(moduleDefaultExport: T): UnwrapDefault<T> => {
   const mut_ref: { current: unknown } = { current: moduleDefaultExport };
 
   for (;;) {
@@ -58,7 +60,37 @@ const rollupPluginReplace = interopDefault(rollupPluginReplaceNs.default);
 
 const rollupPluginStrip = interopDefault(rollupPluginStripNs.default);
 
-const rollupPluginTypescript = interopDefault(rollupPluginTypescriptNs.default);
+const rollupPluginEsbuild = interopDefault(rollupPluginEsbuildNs.default);
+
+/**
+ * Source files import sibling modules with the `.mjs` extension that they
+ * will have after the build (Node16/NodeNext-style ESM imports), but the
+ * files on disk are `.mts`. `@rollup/plugin-typescript` used to perform this
+ * mapping via the TypeScript module resolver; `rollup-plugin-esbuild` does
+ * not, so resolve it here.
+ */
+const rollupPluginResolveMtsFromMjs: RollupPlugin = {
+  name: 'resolve-mts-from-mjs',
+  resolveId: (source, importer) => {
+    if (
+      importer !== undefined &&
+      source.startsWith('.') &&
+      source.endsWith('.mjs')
+    ) {
+      const candidate = path.resolve(
+        path.dirname(importer),
+        `${source.slice(0, -'.mjs'.length)}.mts`,
+      );
+
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      if (fs.existsSync(candidate)) {
+        return candidate;
+      }
+    }
+
+    return null;
+  },
+};
 
 const outDirRelative = tsconfig.compilerOptions.outDir;
 
@@ -87,17 +119,23 @@ export default defineConfig({
     entryFileNames: '[name].mjs',
   },
   plugins: [
+    rollupPluginResolveMtsFromMjs,
     rollupPluginReplace({
       'import.meta.vitest': 'undefined',
       preventAssignment: true,
     }),
-    rollupPluginTypescript({
-      tsconfig: path.resolve(configDir, './tsconfig.build.json'),
-      compilerOptions: {
-        // Override module settings for bundling
-        module: 'ESNext',
-        moduleResolution: 'bundler',
+    // Transpile TypeScript with esbuild. TypeScript 7 (native) no longer
+    // provides the JS compiler API that `@rollup/plugin-typescript` requires,
+    // so transpilation is done with esbuild here, and type checking &
+    // declaration emit are done with the native `tsc` in
+    // `scripts/cmd/build.mts`.
+    rollupPluginEsbuild({
+      target: 'esnext',
+      sourceMap: true,
+      loaders: {
+        '.mts': 'ts',
       },
+      tsconfig: path.resolve(configDir, './tsconfig.build.json'),
     }),
     rollupPluginReplace({
       "import 'vitest'": 'undefined',
