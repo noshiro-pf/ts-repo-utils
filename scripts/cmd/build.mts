@@ -83,10 +83,10 @@ const build = async (skipCheck: boolean): Promise<void> => {
 
             const outputs =
               rollupConfig.output === undefined
-                ? []
+                ? ([] as const)
                 : Array.isArray(rollupConfig.output)
                   ? rollupConfig.output
-                  : [rollupConfig.output];
+                  : ([rollupConfig.output] as const);
 
             for (const output of outputs) {
               await bundle.write(output);
