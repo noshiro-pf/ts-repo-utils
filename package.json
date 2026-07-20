@@ -54,7 +54,7 @@
     "doc:watch": "typedoc --options ./configs/typedoc.config.mjs --watch",
     "fmt": "pnpm run z:format-uncommitted",
     "fmt:diff": "pnpm run z:format-diff-from origin/main",
-    "fmt:full": "oxfmt --write .",
+    "fmt:full": "organize-imports-cli tsconfig.json && oxfmt --write .",
     "gh:apply-all": "gh-apply-all",
     "gh:apply-repository-settings": "gh-apply-repository-settings",
     "gh:apply-rulesets": "gh-apply-rulesets",
@@ -121,6 +121,7 @@
     "markdownlint": "0.40.0",
     "markdownlint-cli2": "0.22.1",
     "npm-run-all2": "8.0.4",
+    "organize-imports-cli": "1.0.2",
     "oxfmt": "0.58.0",
     "rollup": "4.62.2",
     "rollup-plugin-esbuild": "6.2.1",
@@ -135,6 +136,7 @@
     "vitest": "4.1.5"
   },
   "peerDependencies": {
+    "organize-imports-cli": ">=1.0.2",
     "oxfmt": ">=0.58.0"
   },
   "engines": {
