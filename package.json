@@ -54,7 +54,7 @@
     "doc:watch": "typedoc --options ./configs/typedoc.config.mjs --watch",
     "fmt": "pnpm run z:format-uncommitted",
     "fmt:diff": "pnpm run z:format-diff-from origin/main",
-    "fmt:full": "organize-imports-cli tsconfig.json && oxfmt --write .",
+    "fmt:full": "organize-imports-cli tsconfig.json && oxfmt --write --no-error-on-unmatched-pattern .",
     "gh:apply-all": "gh-apply-all",
     "gh:apply-repository-settings": "gh-apply-repository-settings",
     "gh:apply-rulesets": "gh-apply-rulesets",
