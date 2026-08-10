@@ -1,3 +1,11 @@
+> [!IMPORTANT]
+>
+> **This repository has moved to [noshiro-pf/mono](https://github.com/noshiro-pf/mono).**
+>
+> Development continues at [`libs/ts-repo-utils`](https://github.com/noshiro-pf/mono/tree/main/libs/ts-repo-utils).
+> The full commit history and every tag came along; releases and issues stay
+> readable here.
+
 # ts-repo-utils
 
 [![npm version](https://img.shields.io/npm/v/ts-repo-utils.svg)](https://www.npmjs.com/package/ts-repo-utils)
